@@ -1,60 +1,83 @@
-main {
+:root {
+  font-size: 12px;
+  font-family: "LXGW WenKai Mono TC", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: row;
-  background-color: beige;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  box-sizing: border-box;
 }
 
-.controller {
+.title-area {
+  margin-bottom: 10px;
+  width: 100%;
   text-align: center;
 }
 
-.mode {
+.title-area h1 {
+  font-size: 3rem;
+}
+
+.pomodoro-area {
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.time-area {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.time {
+  display: block;
+  margin: auto;
+  width: 80%;
   text-align: center;
-  font-size: 4em;
+  font-size: 3rem;
 }
 
-.timer {
-  size: 10;
-  background-color: beige;
-  color: black;
-  margin: 10px;
-  padding: 0px;
-  width: 200px;
-  font-size: 2em;
-  outline: none;
-  text-align: center;
-  cursor: none;
+.control-area {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
-.edit {
-  border: black 2px solid;
-  size: 10;
-  background-color: beige;
-  color: black;
-  margin: 10px;
-  padding: 0px;
-  width: 200px;
-  font-size: 2em;
-  outline: none;
-  text-align: center;
-}
-
-.hide {
-  display: none;
-}
-
-.button {
-  padding: 3px 5px;
-  border: black solid 1px;
-  background: none;
-  color: rebeccapurple;
-}
-
-.button:hover {
-  background-color: black;
-  color: white;
+.btn-default {
+  background-color: transparent;
   cursor: pointer;
+  border: 1px solid black;
+  font-size: 2rem;
+  font-weight: 500;
+  padding: 5px 10px;
+  position: relative;
+  transition: all 1s;
+}
+
+.btn-default:hover {
+  color: red;
+}
+
+.btn-default::before {
+  content: "";
+  background-color: gold;
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 30%;
+  height: 40px;
+  transition: all 1s;
+}
+
+.btn-default:hover::before {
+  width: 100%;
+  opacity: 0.5;
 }
