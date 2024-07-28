@@ -52,16 +52,21 @@
 
 .btn-default {
   background-color: transparent;
-  cursor: pointer;
   border: 1px solid black;
   font-size: 2rem;
   font-weight: 500;
   padding: 5px 10px;
   position: relative;
-  transition: all 1s;
+  opacity: 0.3;
 }
 
-.btn-default:hover {
+.btn-decor {
+  transition: all 1s;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.btn-decor:hover {
   color: red;
 }
 
@@ -73,11 +78,11 @@
   left: 0;
   top: 0;
   width: 30%;
-  height: 40px;
+  height: 39px;
   transition: all 1s;
 }
 
-.btn-default:hover::before {
+.btn-decor:hover::before {
   width: 100%;
   opacity: 0.5;
 }

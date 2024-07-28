@@ -3260,51 +3260,32 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
   var module_default = src_default;
 
   // src/app.js
-  module_default.data("timer", () => ({
-    mode: "Focus",
-    editting: false,
-    running: false,
-    totalSeconds: 25 * 60,
-    curTime: "25:00",
-    //needs to be a special class of its own
-    intervalId: 0,
-    startTimer() {
-      let mins = Number(this.curTime.slice(0, 2));
-      let secs = Number(this.curTime.slice(3, 5));
-      this.running = true;
-      this.intervalId = setInterval(() => {
-        secs -= 1;
-        if (secs < 0) {
-          mins -= 1;
-          secs = 59;
-        }
-        if (mins < 0) {
-          clearInterval(countDown);
-        } else {
-          this.curTime = this.convert(mins) + ":" + this.convert(secs);
-        }
-      }, 1e3);
+  module_default.data("pomodoro", () => ({
+    formatTime: "25:00",
+    totalSeconds: 0,
+    isRunning: false,
+    isEditing: false,
+    init() {
+      this.totalSeconds = this.toSecs(this.formatTime);
     },
-    pauseTimer() {
-      this.running = false;
-      clearInterval(this.intervalId);
+    toSecs(formatTime) {
+      const mins = Number(formatTime.slice(0, 2));
+      const secs = Number(formatTime.slice(3));
+      return mins * 60 + secs;
     },
-    startEdit() {
-      this.editting = true;
-    },
-    saveEdit() {
-      if (!this.formatCheck(this.curTime)) {
-        this.curTime = "25:00";
-        alert("please follow the format of xx:xx, x being a digit");
+    toggleRun() {
+      if (!this.isEditing) {
+        this.isRunning = !this.isRunning;
       } else {
-        this.editting = false;
+        alert("Can't run the timer while editing. Please finish editing first");
       }
     },
-    convert(num) {
-      return String(num).padStart(2, "0");
-    },
-    formatCheck(time) {
-      return /^\d{2}:[0-5]\d$/.test(time);
+    toggleEdit() {
+      if (!this.isRunning) {
+        this.isEditing = !this.isEditing;
+      } else {
+        alert("Can't edit the timer while running. Please pause the timer first");
+      }
     }
   }));
   module_default.start();

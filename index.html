@@ -14,22 +14,22 @@
 </head>
 <body>
     <div class="container">
-        <div class="pomodoro-area">
+        <div class="pomodoro-area" x-data="pomodoro">
             <div class="title-area">
                 <h1>FOCUS</h1>
             </div>
             <div class="time-area">
-                <input type="text" value="12:24" class="time">
+                <input type="text" x-model="formatTime" class="time">
             </div>
             <div class="control-area">
                 <div class="start-btn-area btn-area">
-                    <button class="btn-default">
-                        <p>start</p> 
+                    <button :class="'btn-default ' + (isEditing ? '' : 'btn-decor')" @click="toggleRun()">
+                        <p x-text="isRunning ? 'pause' : 'start'"></p> 
                     </button>
                 </div>
                 <div class="edit-btn-area btn-area">
-                    <button class="btn-default">
-                        <p>edit</p>
+                    <button :class="'btn-default ' + (isRunning ? '' : 'btn-decor')" @click="toggleEdit()">
+                        <p x-text="isEditing ? 'done editing' : 'edit'"></p>
                     </button>
                 </div>
             </div>
