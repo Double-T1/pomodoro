@@ -19,7 +19,7 @@
                 <h1>FOCUS</h1>
             </div>
             <div class="time-area">
-                <input type="text" x-model="formatTime" class="time">
+                <input x-ref="input" :disabled="!isEditing" type="text" x-model="shownTime" class="time" placeholder="MM:SS">
             </div>
             <div class="control-area">
                 <div class="start-btn-area btn-area">
