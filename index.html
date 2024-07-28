@@ -21,16 +21,25 @@
             <div class="time-area">
                 <input x-ref="input" :disabled="!isEditing" type="text" x-model="shownTime" class="time" placeholder="MM:SS">
             </div>
-            <div class="control-area">
-                <div class="start-btn-area btn-area">
-                    <button :class="'btn-default ' + (isEditing ? '' : 'btn-decor')" @click="toggleRun()">
-                        <p x-text="isRunning ? 'pause' : 'start'"></p> 
-                    </button>
+            <div>
+                <div class="control-area">
+                    <div class="start-btn-area btn-area">
+                        <button :class="'btn-default ' + (isEditing ? '' : 'btn-decor')" @click="toggleRun()">
+                            <p x-text="isRunning ? 'pause' : 'start'"></p> 
+                        </button>
+                    </div>
+                    <div class="edit-btn-area btn-area">
+                        <button :class="'btn-default ' + (isRunning ? '' : 'btn-decor')" @click="toggleEdit()">
+                            <p x-text="isEditing ? 'done editing' : 'edit'"></p>
+                        </button>
+                    </div>
                 </div>
-                <div class="edit-btn-area btn-area">
-                    <button :class="'btn-default ' + (isRunning ? '' : 'btn-decor')" @click="toggleEdit()">
-                        <p x-text="isEditing ? 'done editing' : 'edit'"></p>
-                    </button>
+                <div class="control-area">
+                    <div class="start-btn-area btn-area">
+                        <button :class="'btn-default ' + (isEditing || isRunning ? '' : 'btn-decor')" @click="resetTimer()">
+                            <p>reset</p>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

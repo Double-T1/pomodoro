@@ -52,6 +52,8 @@
   display: flex;
   justify-content: center;
   gap: 10px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 .btn-default {

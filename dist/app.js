@@ -3331,8 +3331,11 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
         return true;
       }
       this.shownTime = this.setTime;
-      alert("please insert the desired time in the format of 'MM:SS'");
+      alert("Please insert the desired time in the format of 'MM:SS'. At most 59:59.");
       return false;
+    },
+    resetTimer() {
+      this.shownTime = this.setTime;
     }
   }));
   module_default.start();
