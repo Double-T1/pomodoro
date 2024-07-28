@@ -1,0 +1,60 @@
+main {
+  display: flex;
+  flex-direction: row;
+  background-color: beige;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.controller {
+  text-align: center;
+}
+
+.mode {
+  text-align: center;
+  font-size: 4em;
+}
+
+.timer {
+  size: 10;
+  background-color: beige;
+  color: black;
+  margin: 10px;
+  padding: 0px;
+  width: 200px;
+  font-size: 2em;
+  outline: none;
+  text-align: center;
+  cursor: none;
+}
+
+.edit {
+  border: black 2px solid;
+  size: 10;
+  background-color: beige;
+  color: black;
+  margin: 10px;
+  padding: 0px;
+  width: 200px;
+  font-size: 2em;
+  outline: none;
+  text-align: center;
+}
+
+.hide {
+  display: none;
+}
+
+.button {
+  padding: 3px 5px;
+  border: black solid 1px;
+  background: none;
+  color: rebeccapurple;
+}
+
+.button:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}

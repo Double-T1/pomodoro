@@ -1,0 +1,19 @@
+{
+  "name": "pomodoro",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "./node_modules/.bin/esbuild src/app.js --bundle --outfile=dist/app.js --watch",
+    "build": "./node_modules/.bin/esbuild src/app.js --bundle --outfile=dist/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "esbuild": "^0.23.0"
+  },
+  "dependencies": {
+    "alpinejs": "^3.14.1"
+  }
+}
