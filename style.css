@@ -35,7 +35,7 @@
   margin-bottom: 10px;
 }
 
-.time {
+.time-input {
   display: block;
   margin: auto;
   width: 80%;
@@ -43,7 +43,6 @@
   font-size: 5rem;
   color: black;
   border: none;
-  background-color: transparent;
 }
 
 .control-area {
