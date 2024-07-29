@@ -18,8 +18,9 @@
             <div class="title-area">
                 <h1>FOCUS</h1>
             </div>
-            <div class="time-area">
+            <div class="input-area">
                 <input x-ref="input" :disabled="!isEditing" type="text" x-model="shownTime" class="time-input" placeholder="MM:SS">
+                <div x-ref="loadingBar" class="loading-bar"></div>
             </div>
             <div>
                 <div class="control-area">

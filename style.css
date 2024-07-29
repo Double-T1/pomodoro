@@ -3,6 +3,7 @@
   font-family: "LXGW WenKai Mono TC", monospace;
   font-weight: 400;
   font-style: normal;
+  --time: 0s;
 }
 
 .container {
@@ -30,20 +31,46 @@
   padding: 10px;
 }
 
-.time-area {
-  width: 100%;
+.input-area {
+  margin: auto;
+  width: 80%;
+  height: 75px;
+  position: relative;
   margin-bottom: 10px;
 }
 
 .time-input {
   display: block;
-  margin: auto;
-  width: 80%;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   text-align: center;
   font-size: 5rem;
   color: black;
   border: none;
+  position: relative;
+  z-index: 1;
 }
+
+.loading-bar {
+  content: "";
+  background-color: red;
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  width: var(--bar-width);
+  height: 100%;
+}
+
+/* @keyframes load {
+  from {
+    width: var(--bar-width);
+  }
+  to {
+    width: 100%;
+  }
+} */
 
 .control-area {
   width: 80%;

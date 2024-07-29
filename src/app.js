@@ -1,21 +1,22 @@
 import Alpine from "alpinejs";
 
 Alpine.data("pomodoro", () => ({
-  setTime: "25:00",
+  setTime: "00:10",
+  totalSeconds: 10,
   shownTime: "00:00",
-  totalSeconds: 0,
+  curSeconds: 0,
   isRunning: false,
   isEditing: false,
   intervalId: null,
 
   init() {
-    this.totalSeconds = this.toSecs(this.setTime);
+    this.curSeconds = this.totalSeconds;
     this.shownTime = this.setTime;
   },
 
-  toSecs(shownTime) {
-    const mins = Number(shownTime.slice(0,2));
-    const secs = Number(shownTime.slice(3));
+  toSecs(timeFormat) {
+    const mins = Number(timeFormat.slice(0,2));
+    const secs = Number(timeFormat.slice(3));
     return mins*60 + secs;
   },
 
@@ -42,7 +43,7 @@ Alpine.data("pomodoro", () => ({
     if (!this.isRunning) {
       if (!this.isEditing) {
         this.isEditing = true;
-        this.$nextTick(() => { this.$refs.input.focus(); })
+        this.$nextTick(() => { this.$refs.input.focus();  })
       } else if (this.updateTimer()) {
         this.isEditing = false;
       }
@@ -51,21 +52,31 @@ Alpine.data("pomodoro", () => ({
     }
   },
 
-  runTimer() {
-    this.totalSeconds = this.toSecs(this.shownTime);
+  async runTimer() {
+    this.curSeconds = this.toSecs(this.shownTime);
+    this.loadBar(this.curSeconds);
+    //this.$refs.loadingBar.style.setProperty("animation", `load ${this.curSeconds}s linear`);
     this.intervalId = setInterval(()=> {
-      if (this.totalSeconds === 0) {
+      if (this.curSeconds === 0) {
         clearInterval(this.intervalId);
+        alert("Times up!! nice job focusing on your goal!")
+        // how do i make the api call first ?
+        // currently this doesn't work
+        this.resetTimer();
         this.toggleRun();
+        this.loadBar(this.totalSeconds);
       } else {
-        this.totalSeconds -= 1;
-        this.shownTime = this.toFormat(this.totalSeconds);
+        this.curSeconds -= 1;
+        this.shownTime = this.toFormat(this.curSeconds);
+        this.loadBar(this.curSeconds);
       }
     },1000)
   },
 
   pauseTimer() {
     clearInterval(this.intervalId);
+    this.$refs.loadingBar.style.removeProperty("animation");
+    this.loadBar(this.curSeconds);
   }, 
 
   updateTimer() {
@@ -74,6 +85,9 @@ Alpine.data("pomodoro", () => ({
     if (pattern.test(newTime)) {
       this.setTime = newTime;
       this.shownTime = this.setTime;
+      this.totalSeconds = this.toSecs(this.setTime);
+      this.curSeconds = this.totalSeconds;
+      this.loadBar(this.curSeconds);
       return true;
     }
 
@@ -84,7 +98,12 @@ Alpine.data("pomodoro", () => ({
 
   resetTimer() {
     this.shownTime = this.setTime;
-  }
+  },
+
+  loadBar(curSecs) {
+    const secPercent = (1-(curSecs/this.totalSeconds))*100;
+    this.$refs.loadingBar.style.setProperty("--bar-width", `${secPercent}%`);
+  },
 }));
 
 
