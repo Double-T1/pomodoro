@@ -3268,9 +3268,11 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     isRunning: false,
     isEditing: false,
     intervalId: null,
+    barWidth: 0,
     init() {
       this.curSeconds = this.totalSeconds;
       this.shownTime = this.setTime;
+      this.reloadBar();
     },
     toSecs(timeFormat) {
       const mins = Number(timeFormat.slice(0, 2));
@@ -3297,40 +3299,52 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     toggleEdit() {
       if (!this.isRunning) {
         if (!this.isEditing) {
+          this.clickReset();
           this.isEditing = true;
           this.$nextTick(() => {
             this.$refs.input.focus();
           });
-        } else if (this.updateTimer()) {
+        } else if (this.updateSetTime()) {
           this.isEditing = false;
         }
       } else {
         alert("Can't edit the timer while running. Please pause the timer first");
       }
     },
-    async runTimer() {
+    clickReset() {
+      if (!this.isRunning && !this.isEditing) {
+        this.endTimer();
+        this.shownTime = this.setTime;
+      } else {
+        alert("Can't reset the timer now. Stop the current process and try again.");
+      }
+    },
+    runTimer() {
       this.curSeconds = this.toSecs(this.shownTime);
-      this.loadBar(this.curSeconds);
+      this.loadBar();
+      this.$refs.loadingBar.style.setProperty("animation", `load ${this.curSeconds}s forwards linear`);
       this.intervalId = setInterval(() => {
         if (this.curSeconds === 0) {
-          clearInterval(this.intervalId);
           alert("Times up!! nice job focusing on your goal!");
-          this.resetTimer();
-          this.toggleRun();
-          this.loadBar(this.totalSeconds);
+          this.isRunning = false;
+          this.clickReset();
         } else {
           this.curSeconds -= 1;
           this.shownTime = this.toFormat(this.curSeconds);
-          this.loadBar(this.curSeconds);
         }
       }, 1e3);
     },
     pauseTimer() {
+      this.loadBar();
       clearInterval(this.intervalId);
       this.$refs.loadingBar.style.removeProperty("animation");
-      this.loadBar(this.curSeconds);
     },
-    updateTimer() {
+    endTimer() {
+      this.reloadBar();
+      clearInterval(this.intervalId);
+      this.$refs.loadingBar.style.removeProperty("animation");
+    },
+    updateSetTime() {
       const newTime = this.shownTime.trim();
       const pattern = /^[0-5]\d:[0-5]\d$/;
       if (pattern.test(newTime)) {
@@ -3338,19 +3352,19 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
         this.shownTime = this.setTime;
         this.totalSeconds = this.toSecs(this.setTime);
         this.curSeconds = this.totalSeconds;
-        this.loadBar(this.curSeconds);
         return true;
       }
       this.shownTime = this.setTime;
       alert("Please insert the desired time in the format of 'MM:SS'. At most 59:59.");
       return false;
     },
-    resetTimer() {
-      this.shownTime = this.setTime;
+    loadBar() {
+      this.barWidth = this.$refs.loadingBar.offsetWidth;
+      this.$refs.loadingBar.style.setProperty("--bar-width", `${this.barWidth}px`);
     },
-    loadBar(curSecs) {
-      const secPercent = (1 - curSecs / this.totalSeconds) * 100;
-      this.$refs.loadingBar.style.setProperty("--bar-width", `${secPercent}%`);
+    reloadBar() {
+      this.barWidth = 0;
+      this.$refs.loadingBar.style.setProperty("--bar-width", `${this.barWidth}px`);
     }
   }));
   module_default.start();

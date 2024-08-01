@@ -8,10 +8,12 @@ Alpine.data("pomodoro", () => ({
   isRunning: false,
   isEditing: false,
   intervalId: null,
+  barWidth: 0,
 
   init() {
     this.curSeconds = this.totalSeconds;
     this.shownTime = this.setTime;
+    this.reloadBar();
   },
 
   toSecs(timeFormat) {
@@ -42,9 +44,10 @@ Alpine.data("pomodoro", () => ({
   toggleEdit() {
     if (!this.isRunning) {
       if (!this.isEditing) {
+        this.clickReset();
         this.isEditing = true;
         this.$nextTick(() => { this.$refs.input.focus();  })
-      } else if (this.updateTimer()) {
+      } else if (this.updateSetTime()) {
         this.isEditing = false;
       }
     } else {
@@ -52,34 +55,46 @@ Alpine.data("pomodoro", () => ({
     }
   },
 
-  async runTimer() {
+  clickReset() {
+    if (!this.isRunning && !this.isEditing) {
+      this.endTimer();
+      this.shownTime = this.setTime;
+    } else {
+      alert("Can't reset the timer now. Stop the current process and try again.")
+    }
+  },
+
+  runTimer() {
     this.curSeconds = this.toSecs(this.shownTime);
-    this.loadBar(this.curSeconds);
-    //this.$refs.loadingBar.style.setProperty("animation", `load ${this.curSeconds}s linear`);
+    this.loadBar();
+    this.$refs.loadingBar.style.setProperty("animation", `load ${this.curSeconds}s forwards linear`);
     this.intervalId = setInterval(()=> {
       if (this.curSeconds === 0) {
-        clearInterval(this.intervalId);
-        alert("Times up!! nice job focusing on your goal!")
-        // how do i make the api call first ?
-        // currently this doesn't work
-        this.resetTimer();
-        this.toggleRun();
-        this.loadBar(this.totalSeconds);
+        alert("Times up!! nice job focusing on your goal!");
+        this.isRunning = false;
+        this.clickReset();
       } else {
         this.curSeconds -= 1;
         this.shownTime = this.toFormat(this.curSeconds);
-        this.loadBar(this.curSeconds);
       }
     },1000)
   },
 
+
   pauseTimer() {
+    // sequence matters;
+    this.loadBar();
     clearInterval(this.intervalId);
     this.$refs.loadingBar.style.removeProperty("animation");
-    this.loadBar(this.curSeconds);
   }, 
 
-  updateTimer() {
+  endTimer() {
+    this.reloadBar();
+    clearInterval(this.intervalId);
+    this.$refs.loadingBar.style.removeProperty("animation");
+  },
+
+  updateSetTime() {
     const newTime = this.shownTime.trim();
     const pattern = /^[0-5]\d:[0-5]\d$/;
     if (pattern.test(newTime)) {
@@ -87,7 +102,7 @@ Alpine.data("pomodoro", () => ({
       this.shownTime = this.setTime;
       this.totalSeconds = this.toSecs(this.setTime);
       this.curSeconds = this.totalSeconds;
-      this.loadBar(this.curSeconds);
+      
       return true;
     }
 
@@ -96,14 +111,15 @@ Alpine.data("pomodoro", () => ({
     return false;
   },
 
-  resetTimer() {
-    this.shownTime = this.setTime;
+  loadBar() {
+    this.barWidth = this.$refs.loadingBar.offsetWidth;
+    this.$refs.loadingBar.style.setProperty("--bar-width", `${this.barWidth}px`);
   },
 
-  loadBar(curSecs) {
-    const secPercent = (1-(curSecs/this.totalSeconds))*100;
-    this.$refs.loadingBar.style.setProperty("--bar-width", `${secPercent}%`);
-  },
+  reloadBar() {
+    this.barWidth = 0;
+    this.$refs.loadingBar.style.setProperty("--bar-width", `${this.barWidth}px`);
+  }
 }));
 
 
